@@ -1,20 +1,22 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: argoproj.io/v1alpha1
+kind: Application
 metadata:
-  name: argocd
+  name: root-apps
   namespace: argocd
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.tls: "true"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
-  rules:
-    - host: argo-cd.mos-hack.ru
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: argocd-server
-                port:
-                  number: 80
+  project: default
+  source:
+    repoURL: https://github.com/Dan9191/infra.git
+    targetRevision: HEAD
+    path: apps/ui
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
