@@ -1,13 +1,25 @@
-apiVersion: helm.cattle.io/v1
-kind: HelmChartConfig
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: traefik
-  namespace: kube-system
+  name: argocd
+  namespace: argocd
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.tls.certresolver: letsencrypt
+    traefik.ingress.kubernetes.io/router.middlewares: https-redirect@kubernetescrd
 spec:
-  valuesContent: |-
-    additionalArguments:
-      - "--certificatesresolvers.letsencrypt.acme.email=dreamka1991@gmail.com"
-      - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
-      - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
-      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
-      - "--certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+  tls:
+    - hosts:
+        - argo-cd.mos-hack.ru
+  rules:
+    - host: argo-cd.mos-hack.ru
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: argocd-server
+                port:
+                  number: 80
