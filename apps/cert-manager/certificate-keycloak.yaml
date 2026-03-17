@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: keycloak-cert
+  namespace: keycloak
+spec:
+  secretName: keycloak-tls
+  dnsNames:
+    - auth.mos-hack.ru
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
