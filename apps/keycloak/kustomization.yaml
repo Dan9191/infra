@@ -1,5 +1,6 @@
 resources:
   - deployment.yaml
   - service.yaml
-  - secrets.yaml
   - ingress.yaml
+  - sealed-postgres-secret.yaml
+  - sealed-keycloak-admin-secret.yaml

@@ -40,8 +40,8 @@ spec:
             - name: KC_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres-password
-                  key: password
+                  name: postgres-secret
+                  key: postgres-password
             - name: KC_HOSTNAME
               value: auth.mos-hack.ru
             - name: KC_PROXY
