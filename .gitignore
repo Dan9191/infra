@@ -2,3 +2,6 @@
 /shelf/
 /workspace.xml
 /.idea/
+/pub-cert.pem
+/secret.yaml
+/sealed-secret.yaml
