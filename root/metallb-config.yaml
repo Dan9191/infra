@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: git@gitlab.com:dan6103605/infra.git
+    repoURL: https://github.com/Dan9191/infra.git
     targetRevision: main
     path: apps/metallb
   destination:
