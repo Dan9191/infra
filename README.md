@@ -60,3 +60,8 @@ kubectl exec -it -n keycloak keycloak-db768f54c-xtj7r -- bash
 8. Клиенты: graduation-frontend, graduation-token
 9. Роли: graduation.admin, graduation.user
 10. Создать пользователя с постоянным паролем и верифицированным email
+
+### RabbitMQ
+```shell
+kubectl port-forward svc/rabbitmq 15672:15672 -n rabbitmq
+```
