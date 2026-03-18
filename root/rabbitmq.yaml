@@ -7,24 +7,9 @@ spec:
   project: default
 
   source:
-    repoURL: oci://registry-1.docker.io/bitnamicharts
-    chart: rabbitmq
-    targetRevision: 12.0.0
-    helm:
-      values: |
-        auth:
-          username: admin
-          password: admin123
-
-        persistence:
-          enabled: true
-          storageClass: local-path
-          size: 10Gi
-
-        service:
-          type: ClusterIP
-
-        extraPlugins: "rabbitmq_management"
+    repoURL: https://github.com/Dan9191/infra.git
+    targetRevision: HEAD
+    path: rabbitmq
 
   destination:
     server: https://kubernetes.default.svc
