@@ -7,7 +7,7 @@ spec:
   project: default
 
   source:
-    repoURL: https://charts.bitnami.com/bitnami
+    repoURL: oci://registry-1.docker.io/bitnamicharts
     chart: rabbitmq
     targetRevision: 12.0.0
     helm:
