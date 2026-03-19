@@ -20,8 +20,6 @@ spec:
       labels:
         app: article-service
     spec:
-      nodeSelector:
-        node-role.kubernetes.io/kotlin: "true"
       containers:
         - name: article-service
           image: ghcr.io/dan9191/graduation-work/article:3031a4927e1e738b4d6d663df01de3017c6f700a
