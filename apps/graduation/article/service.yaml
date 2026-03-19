@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: article-service
+  namespace: content-backend
+  labels:
+    app: graduation-article
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8093
+      targetPort: 8093
+      protocol: TCP
+      name: http
+  selector:
+    app: article-service

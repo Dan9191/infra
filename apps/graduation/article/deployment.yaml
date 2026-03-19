@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: article-service
+  namespace: graduation-article
+  labels:
+    app: article-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: article-service
+  template:
+    metadata:
+      labels:
+        app: article-service
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/kotlin: "true"
+      containers:
+        - name: article-service
+          image: ghcr.io/dan9191/graduation-work/article:3031a4927e1e738b4d6d663df01de3017c6f700a
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8093
+              name: http
+          envFrom:
+            - configMapRef:
+                name: graduation-article-config
+            - secretRef:
+                name: postgres-pass-secret
+          env:
+            - name: DATASOURCE_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-pass-secret
+                  key: postgres-password
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8093
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8093
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 3
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8093
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 30

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: graduation-article-config
+  namespace: graduation-article
+data:
+  SERVER_PORT: "8093"
+  SPRING_APPLICATION_NAME: "article-service"
+  DATASOURCE_R2DBC_URL: "r2dbc:postgresql://postgres.postgres.svc.cluster.local:5432/postgres?currentSchema=article_service"
+  DATASOURCE_NAME: "postgres"
+  DATASOURCE_URL: "jdbc:postgresql://postgres.postgres.svc.cluster.local:5432/postgres"
+  DATASOURCE_SCHEMAS: "article_service"
+  FLYWAY_LOCATIONS: "classpath:db/migration"
+  KEYCLOAK: "https://auth.mos-hack.ru/realms/graduation"
+  RABBITMQ_HOST: "rabbitmq.rabbitmq.svc.cluster.local"
+  RABBITMQ_PORT: "5672"
+  RABBITMQ_USERNAME: "admin"
+  RABBITMQ_PASSWORD: "admin123"
+  RABBITMQ_VIRTUAL_HOST: "/"
+  RABBITMQ_CON_TIMEOUT: "5000"
