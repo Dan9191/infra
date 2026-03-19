@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: content-deployment
+  namespace: content-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: content-frontend
+  template:
+    metadata:
+      labels:
+        app: content-frontend
+    spec:
+      containers:
+        - name: content-frontend
+          image: ghcr.io/dan9191/content-frontend:sha-4b21d18303194b01efa4cfefc839af20ae5fe0f2
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: config-volume
+              mountPath: /usr/share/nginx/html/config.json
+              subPath: config.json
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              memory: "128Mi"
+              cpu: "200m"
+      volumes:
+        - name: config-volume
+          configMap:
+            name: content-config
