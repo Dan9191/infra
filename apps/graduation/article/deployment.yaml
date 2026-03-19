@@ -31,7 +31,7 @@ spec:
             - configMapRef:
                 name: graduation-article-config
           env:
-            - name: DATASOURCE_USER_PASSWORD
+            - name: DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: postgres-pass-secret
