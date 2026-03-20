@@ -13,7 +13,7 @@ spec:
   tls:
     - hosts:
         - mos-hack.ru
-      secretName: kumiko-pro-tls
+      secretName: mos-hack-tls
   rules:
     - host: mos-hack.ru
       http:
