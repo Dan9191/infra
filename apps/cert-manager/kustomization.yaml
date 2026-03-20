@@ -5,3 +5,4 @@ resources:
   - clusterissuer.yaml
   - certificate-keycloak.yaml
   - certificate-graduation-gateway.yaml
+  - certificate-graduation-frontend.yaml
