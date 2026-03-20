@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: graduation-rag-config
+  namespace: graduation-rag
+data:
+  DATASOURCE_NAME: "postgres"
+  DATASOURCE_URL: "jdbc:postgresql://postgres.postgres.svc.cluster.local:5432/postgres?currentSchema=rag"
+  EMBEDDING_MIN_SIMILARITY: "0.50"
+  EMBEDDING_MODEL: "EmbeddingsGigaR"
+  EMBEDDING_URL: "https://gigachat.devices.sberbank.ru/api/v1/embeddings"
+  KEYCLOAK: "https://auth.mos-hack.ru/realms/graduation"
+  LLM_MODEL: "GigaChat-2-Max"
+  LLM_URL: "https://gigachat.devices.sberbank.ru/api/v1/chat/completions"
+  MODELS_TOKEN_URL: "https://ngw.devices.sberbank.ru:9443/api/v2/oauth"
+  RABBITMQ_CON_TIMEOUT: "5000"
+  RABBITMQ_EXCHANGE: "article.exchange"
+  RABBITMQ_HOST: "rabbitmq.rabbitmq.svc.cluster.local"
+  RABBITMQ_PASSWORD: "admin123"
+  RABBITMQ_PORT: "5672"
+  RABBITMQ_QUEUE: "article.outbox.queue"
+  RABBITMQ_ROUTING_KEY: "article.outbox"
+  RABBITMQ_USERNAME: "admin"
+  RABBITMQ_VIRTUAL_HOST: "/"
+  SERVER_PORT: "8094"
+  SPRING_APPLICATION_NAME: "rag-service"

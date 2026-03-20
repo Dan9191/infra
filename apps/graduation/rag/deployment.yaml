@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: article-dep
-  namespace: graduation-article
+  name: rag-dep
+  namespace: graduation-rag
   labels:
-    app: article-service
+    app: rag-service
 spec:
   replicas: 1
   strategy:
@@ -14,28 +14,33 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      app: article-service
+      app: rag-service
   template:
     metadata:
       labels:
-        app: article-service
+        app: rag-service
     spec:
       containers:
-        - name: article-service
-          image: ghcr.io/dan9191/graduation-work/article:94b1782dbfc4a61bf13249d0415eba15bc067bc1
+        - name: rag-service
+          image: ghcr.io/dan9191/graduation-work/rag:94b1782dbfc4a61bf13249d0415eba15bc067bc1
           imagePullPolicy: Always
           ports:
-            - containerPort: 8093
+            - containerPort: 8094
               name: http
           envFrom:
             - configMapRef:
-                name: graduation-article-config
+                name: graduation-rag-config
           env:
             - name: DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: postgres-pass-secret
                   key: postgres-password
+            - name: MODELS_SECRET_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: models-token-secret
+                  key:  models-token
           resources:
             requests:
               memory: "512Mi"
@@ -46,21 +51,21 @@ spec:
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
-              port: 8093
+              port: 8094
             initialDelaySeconds: 60
             periodSeconds: 10
             failureThreshold: 5
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
-              port: 8093
+              port: 8094
             initialDelaySeconds: 60
             periodSeconds: 10
             failureThreshold: 3
           startupProbe:
             httpGet:
               path: /actuator/health
-              port: 8093
+              port: 8094
             initialDelaySeconds: 30
             periodSeconds: 10
             failureThreshold: 30

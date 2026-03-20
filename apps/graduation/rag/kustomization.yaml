@@ -1,5 +1,6 @@
 resources:
   - configmap.yaml
   - deployment.yaml
+  - sealed-models-secret.yaml
   - sealed-postgres-secret.yaml
   - service.yaml
