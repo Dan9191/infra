@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-dep
+  namespace: graduation-gateway
+  labels:
+    app: gateway-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: gateway-service
+  template:
+    metadata:
+      labels:
+        app: gateway-service
+    spec:
+      containers:
+        - name: gateway-service
+          image: ghcr.io/dan9191/graduation-work/gateway:94b1782dbfc4a61bf13249d0415eba15bc067bc1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8033
+          envFrom:
+            - configMapRef:
+                name: gateway-config
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8033
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8033
+            initialDelaySeconds: 30
+            periodSeconds: 10

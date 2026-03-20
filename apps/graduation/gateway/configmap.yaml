@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-config
+  namespace: graduation-gateway
+data:
+  SERVER_PORT: "8033"
+  SPRING_APPLICATION_NAME: "gateway-service"
+  ARTICLE_PATH: "/knowledge/**"
+  ARTICLE_STRIP_PREFIX: "1"
+  RAG_PATH: "/embedding/**"
+  RAG_STRIP_PREFIX: "1"
+  ARTICLE_SERVICE_ID: "article"
+  ARTICLE_SERVICE_URI: "http://article-service.graduation-article.svc.cluster.local:8093"
+  RAG_SERVICE_ID: "rag"
+  RAG_SERVICE_URI: "http://rag-service.graduation-rag.svc.cluster.local:8094"
