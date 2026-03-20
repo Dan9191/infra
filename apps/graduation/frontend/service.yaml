@@ -5,7 +5,7 @@ metadata:
   namespace: graduation-frontend
 spec:
   selector:
-    app: graduation-frontend
+    app: frontend
   ports:
     - port: 80
       targetPort: 80
