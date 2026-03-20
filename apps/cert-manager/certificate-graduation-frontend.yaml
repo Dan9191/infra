@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: mos-hack-tls
   dnsNames:
-    - api.mos-hack.ru
+    - mos-hack.ru
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
