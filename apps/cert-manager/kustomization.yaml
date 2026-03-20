@@ -4,3 +4,4 @@ resources:
   - https://github.com/cert-manager/cert-manager/releases/download/v1.15.3/cert-manager.yaml  # Установка cert-manager
   - clusterissuer.yaml
   - certificate-keycloak.yaml
+  - certificate-graduation-gateway.yaml
