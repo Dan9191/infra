@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: content-deployment
-  namespace: content-frontend
+  name: frontend-deployment
+  namespace: graduation-frontend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: content-frontend
+      app: frontend
   template:
     metadata:
       labels:
-        app: content-frontend
+        app: frontend
     spec:
       containers:
-        - name: content-frontend
-          image: ghcr.io/dan9191/content-frontend:sha-4b21d18303194b01efa4cfefc839af20ae5fe0f2
+        - name: frontend
+          image: ghcr.io/dan9191/graduation-work/frontend:9757d258fd2d490f572e1808ec5730f56083f593
           ports:
             - containerPort: 80
           volumeMounts:
@@ -32,4 +32,4 @@ spec:
       volumes:
         - name: config-volume
           configMap:
-            name: content-config
+            name: frontend-config

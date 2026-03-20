@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+  namespace: graduation-frontend
+data:
+  config.json: |
+    {
+      "apiUrl": "https://api.mos-hack.ru",
+      "keycloak": {
+        "url": "https://auth.mos-hack.ru",
+        "realm": "graduation",
+        "clientId": "graduation-frontend"
+      }
+    }
