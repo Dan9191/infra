@@ -1,6 +1,6 @@
 resources:
   - configmap.yaml
   - deployment.yaml
-  - image-updater.yam
+  - image-updater.yaml
   - ingress.yaml
   - service.yaml
