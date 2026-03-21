@@ -2,5 +2,5 @@ resources:
   - configmap.yaml
   - deployment.yaml
   - image-updater.yam
-  - ingress.yaml
+  - ingress.yamll
   - service.yaml
