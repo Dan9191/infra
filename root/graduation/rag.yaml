@@ -3,11 +3,6 @@ kind: Application
 metadata:
   name: graduation-rag
   namespace: argocd
-  annotations:
-    argocd-image-updater.argoproj.io/image-list: rag-service=ghcr.io/dan9191/graduation-work/rag
-    argocd-image-updater.argoproj.io/rag-service.update-strategy: digest
-    argocd-image-updater.argoproj.io/rag-service.pull-secret: pullsecret:argocd/ghcr-secret
-    argocd-image-updater.argoproj.io/write-back-method: git
 spec:
   project: default
   source:

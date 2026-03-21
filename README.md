@@ -70,7 +70,7 @@ kubectl port-forward svc/rabbitmq 15672:15672 -n rabbitmq
 1. Установим image updater (пример: root/image-updater.yaml)
 2. Создаем токен для чтения образов: Settings → Developer settings → Personal access tokens → Tokens (classic),
 выбираем права read:packages и repo
-3. Генерируем секрет
+3. Генерируем секрет для выгрузки контейнеров
 ```shell
 kubectl create secret docker-registry ghcr-secret \
    --namespace argocd \
@@ -84,17 +84,16 @@ kubectl create secret docker-registry ghcr-secret \
 kubeseal \
 --cert pub-cert.pem \
 --format yaml \
-< ghcr-secret.yaml \
-> sealed-ghcr-secret.yaml
+< image-updater-git-secret.yaml \
+> sealed-image-updater-git-secret.yaml
 ```
 5. Перемещаем в apps/argocd/sealed-ghcr-secret.yaml
+6. Аналогичный шаг для токена с доступом на изменение репозитория
+```shell
+kubectl create secret generic image-updater-git \
+  --namespace argocd \
+  --from-literal=username=Dan9191 \
+  --from-literal=password=YOUR_GITHUB_TOKEN \
+  --dry-run=client -o yaml > image-updater-git-secret.yaml
+```
 6. Создаем argo-cd app, чтобы добавить в кластер этот секрет (пример: root/cluster-secrets.yaml)
-7. Добавляем аннотации в argo-cd манифесты. Пример:
-```
-  annotations:
-    argocd-image-updater.argoproj.io/image-list: rag-service=ghcr.io/dan9191/graduation-work/rag
-    argocd-image-updater.argoproj.io/rag-service.update-strategy: digest
-    argocd-image-updater.argoproj.io/rag-service.pull-secret: pullsecret:argocd/ghcr-secret
-    argocd-image-updater.argoproj.io/write-back-method: git
-```
-где rag-service - название контейнера в соответствующем deployment

@@ -3,11 +3,6 @@ kind: Application
 metadata:
   name: graduation-frontend
   namespace: argocd
-  annotations:
-    argocd-image-updater.argoproj.io/image-list: frontend=ghcr.io/dan9191/graduation-work/frontend
-    argocd-image-updater.argoproj.io/frontend.update-strategy: digest
-    argocd-image-updater.argoproj.io/frontend.pull-secret: pullsecret:argocd/ghcr-secret
-    argocd-image-updater.argoproj.io/write-back-method: git
 spec:
   project: default
   source:

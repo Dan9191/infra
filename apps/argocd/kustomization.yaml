@@ -1,0 +1,3 @@
+resources:
+  - sealed-ghcr-secret.yaml
+  - sealed-image-updater-git-secret.yaml

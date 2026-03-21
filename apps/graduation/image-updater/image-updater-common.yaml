@@ -1,0 +1,68 @@
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: graduation-apps-common
+  namespace: argocd
+spec:
+  # Какие Argo CD Applications обрабатывать
+  applicationRefs:
+    - name: graduation-article
+    - name: graduation-gateway
+    - name: graduation-frontend
+    - name: graduation-rag
+
+  # Глобальная конфигурация write-back (git commit + push)
+  writeBackConfig:
+    method: git
+    gitConfig:
+      # credentials берутся из секрета, который ты уже добавил через cluster-secrets
+      credentials:
+        secret:
+          name: image-updater-git
+          namespace: argocd
+
+  # Список образов, которые нужно отслеживать
+  images:
+    - alias: article-service
+      imageName: ghcr.io/dan9191/graduation-work/article
+      updateStrategy: digest
+      pullSecretRef:
+        name: ghcr-secret
+        namespace: argocd
+
+    - alias: gateway-service
+      imageName: ghcr.io/dan9191/graduation-work/gateway
+      updateStrategy: digest
+      pullSecretRef:
+        name: ghcr-secret
+        namespace: argocd
+
+    - alias: frontend
+      imageName: ghcr.io/dan9191/graduation-work/frontend
+      updateStrategy: digest
+      pullSecretRef:
+        name: ghcr-secret
+        namespace: argocd
+
+    - alias: rag-service
+      imageName: ghcr.io/dan9191/graduation-work/rag
+      updateStrategy: digest
+      pullSecretRef:
+        name: ghcr-secret
+        namespace: argocd
+  commit:
+    messageTemplate: |
+      chore(images): auto-update to new digests
+
+      Updated:
+      {{ range .UpdatedImages }}
+      - {{ .Alias }} → digest {{ .NewDigest | trunc 12 }}
+      {{ end }}
+
+      [skip ci]
+    author:
+      name: argocd-image-updater
+      email: argocd-image-updater@local
+
+  # Как часто проверять (по умолчанию 3 минуты, можно уменьшить для теста)
+  interval: 1m
