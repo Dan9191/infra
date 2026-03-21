@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: rag-service
-          image: ghcr.io/dan9191/graduation-work/rag:5ebee7552768a301dde8d115a1ec40858ac70cc9
+          image: ghcr.io/dan9191/graduation-work/rag:f33c40deeef185204ee87d840cd1d01ad66c3916
           imagePullPolicy: Always
           ports:
             - containerPort: 8094
