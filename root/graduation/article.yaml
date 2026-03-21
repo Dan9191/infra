@@ -3,6 +3,11 @@ kind: Application
 metadata:
   name: graduation-article
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: article-service=ghcr.io/dan9191/graduation-work/article
+    argocd-image-updater.argoproj.io/article-service.update-strategy: digest
+    argocd-image-updater.argoproj.io/article-service.pull-secret: pullsecret:argocd/ghcr-secret
+    argocd-image-updater.argoproj.io/write-back-method: git
 spec:
   project: default
   source:

@@ -3,6 +3,11 @@ kind: Application
 metadata:
   name: graduation-gateway
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: gateway-service=ghcr.io/dan9191/graduation-work/gateway
+    argocd-image-updater.argoproj.io/gateway-service.update-strategy: digest
+    argocd-image-updater.argoproj.io/gateway-service.pull-secret: pullsecret:argocd/ghcr-secret
+    argocd-image-updater.argoproj.io/write-back-method: git
 spec:
   project: default
   source:
