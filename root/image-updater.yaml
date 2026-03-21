@@ -3,14 +3,12 @@ kind: Application
 metadata:
   name: argocd-image-updater
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    repoURL: https://github.com/Dan9191/infra.git
-    targetRevision: main
-    path: apps/image-updater
+    repoURL: https://github.com/argoproj-labs/argocd-image-updater.git
+    targetRevision: v1.1.0
+    path: config/default
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
