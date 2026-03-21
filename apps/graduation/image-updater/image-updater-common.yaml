@@ -6,46 +6,45 @@ metadata:
 spec:
   # Какие Argo CD Applications обрабатывать
   applicationRefs:
-    - name: graduation-article
-    - name: graduation-gateway
-    - name: graduation-frontend
-    - name: graduation-rag
+    - namePattern: graduation-article
+    - namePattern: graduation-gateway
+    - namePattern: graduation-frontend
+    - namePattern: graduation-rag
 
   # Глобальная конфигурация write-back (git commit + push)
   writeBackConfig:
     method: git
-    gitConfig:
-      # credentials берутся из секрета, который ты уже добавил через cluster-secrets
+    git:
       credentials:
         secret:
           name: image-updater-git
           namespace: argocd
 
-  # Список образов, которые нужно отслеживать
+  # Список образов
   images:
     - alias: article-service
-      imageName: ghcr.io/dan9191/graduation-work/article
+      image: ghcr.io/dan9191/graduation-work/article
       updateStrategy: digest
       pullSecretRef:
         name: ghcr-secret
         namespace: argocd
 
     - alias: gateway-service
-      imageName: ghcr.io/dan9191/graduation-work/gateway
+      image: ghcr.io/dan9191/graduation-work/gateway
       updateStrategy: digest
       pullSecretRef:
         name: ghcr-secret
         namespace: argocd
 
     - alias: frontend
-      imageName: ghcr.io/dan9191/graduation-work/frontend
+      image: ghcr.io/dan9191/graduation-work/frontend
       updateStrategy: digest
       pullSecretRef:
         name: ghcr-secret
         namespace: argocd
 
     - alias: rag-service
-      imageName: ghcr.io/dan9191/graduation-work/rag
+      image: ghcr.io/dan9191/graduation-work/rag
       updateStrategy: digest
       pullSecretRef:
         name: ghcr-secret
