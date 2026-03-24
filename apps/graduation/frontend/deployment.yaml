@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: ghcr.io/dan9191/graduation-work/frontend:9757d258fd2d490f572e1808ec5730f56083f593
+          image: ghcr.io/dan9191/graduation-work/frontend:5b48174f67dbd1a9be1694587769a4e20903633e
           ports:
             - containerPort: 80
           volumeMounts:
