@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: graduation-documentation
-          image: ghcr.io/dan9191/graduation-work/docs:73b313f7ef7ee92d0db81ed9ffa2bda084ec5f58
+          image: ghcr.io/dan9191/graduation-work/docs:69bc67d4ff0769e86fe1fb0fb58090dade6255f3
           ports:
             - containerPort: 80
