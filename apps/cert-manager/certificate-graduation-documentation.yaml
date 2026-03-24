@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: graduation-documentation-cert
+  namespace: graduation-documentation
+spec:
+  secretName: graduation-documentation-tls
+  dnsNames:
+    - documentation.mos-hack.ru
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer

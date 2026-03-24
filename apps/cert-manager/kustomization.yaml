@@ -6,3 +6,4 @@ resources:
   - certificate-keycloak.yaml
   - certificate-graduation-gateway.yaml
   - certificate-graduation-frontend.yaml
+  - certificate-graduation-documentation.yaml
