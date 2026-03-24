@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: graduation-documentation-ingress
+  namespace: graduation-documentation
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "20m"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - documentation.mos-hack.ru
+      secretName: graduation-documentation-tls
+  rules:
+    - host: documentation.mos-hack.ru
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: graduation-documentation
+                port:
+                  number: 80

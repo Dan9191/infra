@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: documentation-dep
+  namespace: graduation-documentation
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: graduation-documentation
+  template:
+    metadata:
+      labels:
+        app: graduation-documentation
+    spec:
+      containers:
+        - name: graduation-documentation
+          image: ghcr.io/dan9191/graduation-work/docs:24fdf1adbc68910f431433c44a776c2c774fa4f6
+          ports:
+            - containerPort: 80
