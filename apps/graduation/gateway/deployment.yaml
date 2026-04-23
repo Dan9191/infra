@@ -16,6 +16,10 @@ spec:
     metadata:
       labels:
         app: gateway-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "8033"
     spec:
       containers:
         - name: gateway-service

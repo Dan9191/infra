@@ -15,7 +15,7 @@ data:
       role = "pod"
     
       namespaces {
-        names = ["content-backend", "mos-backend", "default"]
+        names = ["graduation-article", "graduation-rag", "graduation-gateway"]
       }
     }
 
