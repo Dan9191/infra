@@ -7,3 +7,4 @@ resources:
   - certificate-graduation-gateway.yaml
   - certificate-graduation-frontend.yaml
   - certificate-graduation-documentation.yaml
+  - certificate-grafana.yaml

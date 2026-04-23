@@ -1,0 +1,53 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: prometheus
+    targetRevision: 25.27.0
+    helm:
+      releaseName: prometheus
+      values: |
+        alertmanager:
+          enabled: false
+        pushgateway:
+          enabled: false
+
+        server:
+          retention: 14d
+          persistentVolume:
+            enabled: true
+            storageClass: local-path
+            size: 10Gi
+          resources:
+            limits:
+              memory: 4Gi
+              cpu: 1000m
+            requests:
+              memory: 1Gi
+              cpu: 500m
+          # ←─── НОВЫЕ НАСТРОЙКИ ДОБАВЛЯЕМ ЗДЕСЬ, В ОДИН БЛОК server:
+          serviceMonitorSelectorNilUsesHelmValues: false
+          serviceMonitorSelector:
+            matchLabels:
+              release: prometheus
+          serviceMonitorNamespaceSelector: {}
+
+        kube-state-metrics:
+          enabled: true
+        prometheus-node-exporter:
+          enabled: true
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: observability
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

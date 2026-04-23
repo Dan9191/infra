@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alloy-config
+  namespace: observability
+data:
+  config.alloy: >-
+    loki.source.kubernetes "logs" {
+      targets    = discovery.relabel.logs.output
+      forward_to = [loki.write.loki.receiver]
+    
+    }
+
+    discovery.kubernetes "pods" {
+      role = "pod"
+    
+      namespaces {
+        names = ["content-backend", "mos-backend", "default"]
+      }
+    }
+
+    discovery.relabel "logs" {
+      targets = discovery.kubernetes.pods.targets
+
+      rule {
+        source_labels = ["__meta_kubernetes_pod_container_name"]
+        target_label  = "container"
+      }
+
+      rule {
+        source_labels = ["__meta_kubernetes_pod_name"]
+        target_label  = "pod"
+      }
+
+      rule {
+        source_labels = ["__meta_kubernetes_namespace"]
+        target_label  = "namespace"
+      }
+    }
+
+    loki.write "loki" {
+      endpoint {
+        url = "http://loki.observability.svc.cluster.local:3100/loki/api/v1/push"
+      }
+    }

@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: grafana-mos-hack
+  namespace: observability
+spec:
+  secretName: grafana-tls
+  dnsNames:
+    - grafana.mos-hack.ru
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
