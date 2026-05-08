@@ -1,6 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── Variables matching frontend index.css ── */
+/* ── Variables (same as frontend index.css) ── */
 :root {
   --accent:       #059669;
   --accent-hover: #047857;
@@ -10,96 +11,204 @@
   --text:         #0f172a;
   --muted:        #64748b;
   --border:       #e2e8f0;
+  --danger:       #991b1b;
+  --danger-bg:    #fef2f2;
+  --danger-border:#fca5a5;
+  --mono:         'JetBrains Mono', 'Fira Code', monospace;
 }
 
-/* ── Page background ── */
-body,
-html {
-  background-color: var(--bg) !important;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
-  color: var(--text) !important;
+/* ── Page ── */
+html, body {
+  height: 100%;
+  background-color: var(--bg);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ── Login card ── */
-.card-pf {
-  border: 1px solid var(--border) !important;
-  border-top: 3px solid var(--accent) !important;
-  border-radius: 12px !important;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08) !important;
-  background: var(--card-bg) !important;
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
 }
 
-/* ── Page title ── */
-#kc-page-title {
-  color: var(--text) !important;
-  font-weight: 700 !important;
-  font-size: 1.3rem !important;
-  font-family: 'Inter', system-ui, sans-serif !important;
+/* ── Card (mirrors .modal-content from frontend) ── */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 420px;
+  padding: 36px 32px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(5, 150, 105, 0.07);
 }
 
-/* ── Form labels ── */
-label {
-  color: var(--text) !important;
-  font-weight: 500 !important;
-  font-size: 0.875rem !important;
+/* ── Card header ("> База знаний" — like .page-header h1::before) ── */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
 }
 
-/* ── Inputs ── */
-input[type="text"],
-input[type="password"],
-input[type="email"] {
-  border: 1px solid var(--border) !important;
-  border-radius: 7px !important;
-  padding: 10px 12px !important;
-  font-family: 'Inter', system-ui, sans-serif !important;
-  font-size: 0.9rem !important;
-  background: white !important;
-  color: var(--text) !important;
-  transition: border-color 0.15s, box-shadow 0.15s !important;
-  box-sizing: border-box !important;
+.card-header-prompt {
+  font-family: var(--mono);
+  color: var(--accent);
+  font-size: 1.1rem;
+  font-weight: 500;
 }
 
-input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="email"]:focus {
-  border-color: var(--accent) !important;
-  box-shadow: 0 0 0 3px var(--accent-glow) !important;
-  outline: none !important;
+.card-header-title {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
-/* ── Primary button (Login) ── */
-.btn-primary,
-input[type="submit"],
-button[type="submit"] {
-  background-color: var(--accent) !important;
-  border-color: var(--accent) !important;
-  border-radius: 7px !important;
-  color: white !important;
-  font-weight: 500 !important;
-  font-family: 'Inter', system-ui, sans-serif !important;
-  transition: background-color 0.15s !important;
+.card-subtitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 28px;
+  letter-spacing: -0.02em;
 }
 
-.btn-primary:hover,
-.btn-primary:focus,
-input[type="submit"]:hover,
-button[type="submit"]:hover {
-  background-color: var(--accent-hover) !important;
-  border-color: var(--accent-hover) !important;
+/* ── Alert ── */
+.alert {
+  border-radius: 7px;
+  padding: 10px 14px;
+  font-size: 0.875rem;
+  margin-bottom: 20px;
+  line-height: 1.4;
 }
 
-/* ── Links ── */
-a {
-  color: var(--accent) !important;
-}
-
-a:hover {
-  color: var(--accent-hover) !important;
-  text-decoration: underline !important;
-}
-
-/* ── Error alerts ── */
 .alert-error,
-.alert-danger {
-  border-radius: 7px !important;
+.alert-warning {
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
+  color: var(--danger);
+}
+
+.alert-success {
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #065f46;
+}
+
+.alert-info {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e40af;
+}
+
+/* ── Form ── */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.form-group input {
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 10px 12px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.9rem;
+  background: white;
+  color: var(--text);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  width: 100%;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.form-group input.input-error {
+  border-color: var(--danger-border);
+}
+
+/* ── Remember me ── */
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.form-check input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.form-check label {
+  font-size: 0.875rem;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+/* ── Submit button (mirrors .brut-btn.primary) ── */
+.btn-submit {
+  width: 100%;
+  background: var(--accent);
+  color: white;
+  border: 1px solid var(--accent);
+  border-radius: 7px;
+  padding: 11px 18px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+  margin-top: 4px;
+}
+
+.btn-submit:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.btn-submit:active {
+  transform: scale(0.99);
+}
+
+/* ── Bottom links ── */
+.card-links {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.card-links a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.12s;
+}
+
+.card-links a:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .card {
+    padding: 28px 20px;
+  }
 }
