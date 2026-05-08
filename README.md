@@ -1,99 +1,91 @@
-apps/ — каталоги приложений/инфры. Пока положим плейсхолдеры values.yaml, позже наполним по шагам (начнём с MetalLB).
+# infra
 
-root/ — «корневые» директории для App-of-Apps.
+Kubernetes-манифесты для проекта «База знаний». GitOps через ArgoCD по схеме app-of-apps.
 
+## Структура
 
-### Настройка sealed секрета на примере Postgres
-В шифровании так же используется название секрета и пространство имен
+```
+root/                  # ArgoCD Application-манифесты (app-of-apps)
+│   keycloak.yaml
+│   postgres.yaml
+│   rabbitmq.yaml
+│   ...
+│   graduation/        # микросервисы приложения
+│   monitoring/        # Prometheus, Grafana, Loki, Alloy
+│
+apps/                  # Kubernetes-манифесты (Deployment, Service, Ingress, ...)
+    keycloak/
+    postgres/
+    rabbitmq/
+    graduation/
+        frontend/
+        gateway/
+        article/
+        rag/
+        documentation/
+    observability/
+    cert-manager/
+    metallb/
+    storage/
+    argocd/
+```
 
-1. Применение sealed-secrets.yaml
-2. Забираем публичный ключ
+## Gitflow
+
+Вся работа ведётся в ветке `master`. ArgoCD отслеживает репозиторий и автоматически применяет изменения в кластер при каждом пуше.
+
+```
+git push → ArgoCD sync → kubectl apply
+```
+
+**Исключение — кастомный образ Keycloak.** При изменении файлов в `apps/keycloak/theme/` или `apps/keycloak/Dockerfile` запускается GitHub Actions:
+
+```
+push → CI build → docker push ghcr.io/dan9191/infra/keycloak:<sha>
+     → CI обновляет apps/keycloak/deployment.yaml [skip ci]
+     → ArgoCD sync → новый pod
+```
+
+## Sealed Secrets
+
+Секреты шифруются через [Bitnami Sealed Secrets](https://github.com/bitnami-labs/sealed-secrets) и хранятся в репозитории.
+
+**Получить публичный ключ кластера:**
 ```shell
 kubeseal --fetch-cert \
   --controller-name sealed-secrets-controller \
   --controller-namespace kube-system \
   > pub-cert.pem
 ```
-3. Создаём обычный Secret
+
+**Создать и зашифровать секрет:**
 ```shell
-kubectl create secret generic postgres-secret \
-  --namespace postgres \
-  --from-literal=postgres-password='12345' \
+kubectl create secret generic my-secret \
+  --namespace my-namespace \
+  --from-literal=key=value \
   --dry-run=client -o yaml > secret.yaml
+
+kubeseal --cert pub-cert.pem --format yaml < secret.yaml > sealed-secret.yaml
 ```
 
-4. Шифруем его
-```shell
-kubeseal \
-  --cert pub-cert.pem \
-  --format yaml \
-  < ghcr-secret.yaml \
-  > sealed-ghcr-secret.yaml
-```
-5. Кладём в apps/postgres/sealed-secret.yaml
+Готовый `sealed-secret.yaml` кладётся в соответствующую папку в `apps/` и коммитится.
 
-### Создание постоянного админа в keycloak
-1. залогиниться под admin + пароль, задаваемый при создании
-2. получить pod запущенного экземпляра
+## Keycloak
+
+После первого деплоя кастомной темы нужно вручную включить её в админке:
+
+**Realm `graduation`** → Realm settings → Themes → Login theme → `graduation` → Save
+
+Создание постоянного администратора (выполняется один раз):
 ```shell
-kubectl  get pods -n keycloak
-```
-3. Подключиться к pod'у
-```shell
-kubectl exec -it -n keycloak keycloak-db768f54c-xtj7r -- bash
-```
-4. Используем kcadm.sh (на образе Keycloak он есть):
-```shell
+kubectl exec -it -n keycloak <pod-name> -- bash
+
 /opt/keycloak/bin/kcadm.sh config credentials \
-  --server http://localhost:8080 \
-  --realm master \
-  --user admin \
-  --password admin123
-```
-5. Создаём нового постоянного администратора:
-```shell
+  --server http://localhost:8080 --realm master \
+  --user admin --password <password>
+
 /opt/keycloak/bin/kcadm.sh create users -r master -s username=admin2 -s enabled=true
-/opt/keycloak/bin/kcadm.sh set-password -r master --username admin2 --new-password 'SuperSecurePass123'
-```
-6. Потом зашел через ui, дал пользователю admin2 роль realm-admin -> верифицировал email -> удалил admin
-7. Создать Realm graduation
-8. Клиенты: graduation-frontend, graduation-token
-9. Роли: graduation.admin, graduation.user
-10. Создать пользователя с постоянным паролем и верифицированным email
-
-### RabbitMQ
-```shell
-kubectl port-forward svc/rabbitmq 15672:15672 -n rabbitmq
+/opt/keycloak/bin/kcadm.sh set-password -r master --username admin2 --new-password '<password>'
 ```
 
-### Настройка image updater
-1. Установим image updater (пример: root/image-updater.yaml)
-2. Создаем токен для чтения образов: Settings → Developer settings → Personal access tokens → Tokens (classic),
-выбираем права read:packages и repo
-3. Генерируем секрет для выгрузки контейнеров
-```shell
-kubectl create secret docker-registry ghcr-secret \
-   --namespace argocd \
-   --docker-server=ghcr.io \
-   --docker-username=Dan9191 \
-   --docker-password=YOUR_GITHUB_TOKEN \
-   --dry-run=client -o yaml > ghcr-secret.yaml
-```
-4. Запечатываем его
-```shell
-kubeseal \
---cert pub-cert.pem \
---format yaml \
-< image-updater-git-secret.yaml \
-> sealed-image-updater-git-secret.yaml
-```
-5. Перемещаем в apps/argocd/sealed-ghcr-secret.yaml
-6. Аналогичный шаг для токена с доступом на изменение репозитория
-```shell
-kubectl create secret generic image-updater-git \
-  --namespace argocd \
-  --from-literal=username=Dan9191 \
-  --from-literal=password=YOUR_GITHUB_TOKEN \
-  --dry-run=client -o yaml > image-updater-git-secret.yaml
-```
-6. Создаем argo-cd app, чтобы добавить в кластер этот секрет (пример: root/cluster-secrets.yaml)
+Затем в UI: дать `admin2` роль `realm-admin` → верифицировать email → удалить временного `admin`.
