@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: keycloak
-          image: ghcr.io/dan9191/infra/keycloak:a41bab6e96f5449cb68c89e5e25aca0bf72c94a8
+          image: ghcr.io/dan9191/infra/keycloak:2bad4ab7954c4294d9c0fb1abc1fcd5651b2b4ce
           args:
             - start
             - --http-enabled=true
