@@ -27,7 +27,7 @@
         </div>
         </#if>
 
-        <form action="${url.loginAction}" method="post" novalidate>
+        <form action="${url.loginAction}" method="post" novalidate style="width:100%">
 
             <div class="form-group">
                 <label for="username">Логин или e-mail</label>

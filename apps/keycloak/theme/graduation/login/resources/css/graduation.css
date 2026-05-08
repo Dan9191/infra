@@ -18,8 +18,16 @@
 }
 
 /* ── Page ── */
-html, body {
+html {
   height: 100%;
+}
+
+body {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
   background-color: var(--bg);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   color: var(--text);
@@ -27,11 +35,9 @@ html, body {
 }
 
 .page {
-  min-height: 100vh;
+  width: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 24px 16px;
 }
 
 /* ── Card (mirrors .modal-content from frontend) ── */
