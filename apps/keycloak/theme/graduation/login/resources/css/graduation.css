@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ── Variables matching frontend index.css ── */
+:root {
+  --accent:       #059669;
+  --accent-hover: #047857;
+  --accent-glow:  rgba(5, 150, 105, 0.15);
+  --bg:           #f0f4f8;
+  --card-bg:      #ffffff;
+  --text:         #0f172a;
+  --muted:        #64748b;
+  --border:       #e2e8f0;
+}
+
+/* ── Page background ── */
+body,
+html {
+  background-color: var(--bg) !important;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  color: var(--text) !important;
+}
+
+/* ── Login card ── */
+.card-pf {
+  border: 1px solid var(--border) !important;
+  border-top: 3px solid var(--accent) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08) !important;
+  background: var(--card-bg) !important;
+}
+
+/* ── Page title ── */
+#kc-page-title {
+  color: var(--text) !important;
+  font-weight: 700 !important;
+  font-size: 1.3rem !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+}
+
+/* ── Form labels ── */
+label {
+  color: var(--text) !important;
+  font-weight: 500 !important;
+  font-size: 0.875rem !important;
+}
+
+/* ── Inputs ── */
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+  border: 1px solid var(--border) !important;
+  border-radius: 7px !important;
+  padding: 10px 12px !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+  font-size: 0.9rem !important;
+  background: white !important;
+  color: var(--text) !important;
+  transition: border-color 0.15s, box-shadow 0.15s !important;
+  box-sizing: border-box !important;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px var(--accent-glow) !important;
+  outline: none !important;
+}
+
+/* ── Primary button (Login) ── */
+.btn-primary,
+input[type="submit"],
+button[type="submit"] {
+  background-color: var(--accent) !important;
+  border-color: var(--accent) !important;
+  border-radius: 7px !important;
+  color: white !important;
+  font-weight: 500 !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+  transition: background-color 0.15s !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+input[type="submit"]:hover,
+button[type="submit"]:hover {
+  background-color: var(--accent-hover) !important;
+  border-color: var(--accent-hover) !important;
+}
+
+/* ── Links ── */
+a {
+  color: var(--accent) !important;
+}
+
+a:hover {
+  color: var(--accent-hover) !important;
+  text-decoration: underline !important;
+}
+
+/* ── Error alerts ── */
+.alert-error,
+.alert-danger {
+  border-radius: 7px !important;
+}

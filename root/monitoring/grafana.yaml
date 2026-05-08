@@ -78,8 +78,8 @@ spec:
               gnetId: 17175
               revision: 1
               datasource: Prometheus
-            kubernetes-logs:
-              gnetId: 15141
+            loki-logs-explorer:
+              gnetId: 18042
               revision: 1
               datasource: Loki
 

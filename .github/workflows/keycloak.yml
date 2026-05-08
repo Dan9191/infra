@@ -1,0 +1,41 @@
+name: Build Keycloak Theme
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - 'apps/keycloak/theme/**'
+      - 'apps/keycloak/Dockerfile'
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  build-keycloak:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build & push
+        run: |
+          IMAGE=ghcr.io/dan9191/infra/keycloak:${{ github.sha }}
+          docker build -t "$IMAGE" -f apps/keycloak/Dockerfile apps/keycloak
+          docker push "$IMAGE"
+
+      - name: Update deployment image tag
+        run: |
+          sed -i "s|image: .*keycloak.*|image: ghcr.io/dan9191/infra/keycloak:${{ github.sha }}|" \
+            apps/keycloak/deployment.yaml
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add apps/keycloak/deployment.yaml
+          git commit -m "ci: update keycloak image to ${{ github.sha }} [skip ci]"
+          git push
