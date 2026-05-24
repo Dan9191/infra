@@ -8,3 +8,4 @@ resources:
   - certificate-graduation-frontend.yaml
   - certificate-graduation-documentation.yaml
   - certificate-grafana.yaml
+  - certificate-monitor.yaml
