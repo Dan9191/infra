@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - name: article-service
-          image: ghcr.io/dan9191/graduation-work/article:0580c341b3090ebbcac236cff429ffe223e36549
+          image: ghcr.io/dan9191/graduation-work/article:4e27068ecb905aeb2a8e96a1be7b8fd090421480
           imagePullPolicy: Always
           ports:
             - containerPort: 8093
