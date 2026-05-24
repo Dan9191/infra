@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - name: observer-service
-          image: ghcr.io/dan9191/distributed-tx-monitor/observer-service:latest
+          image: ghcr.io/dan9191/distributed-tx-monitor/observer-service:4e66d28b14339f4b0594bd0a61b47908a2211f90
           imagePullPolicy: Always
           ports:
             - containerPort: 8033
