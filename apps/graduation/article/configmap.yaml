@@ -21,3 +21,4 @@ data:
   RABBITMQ_VIRTUAL_HOST: "/"
   SERVER_PORT: "8093"
   SPRING_APPLICATION_NAME: "article-service"
+  OBSERVER_SERVICE_URL: "http://observer-service.observer.svc.cluster.local:8033"
