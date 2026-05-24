@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: observer-frontend-dep
+  namespace: observer
+  labels:
+    app: observer-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: observer-frontend
+  template:
+    metadata:
+      labels:
+        app: observer-frontend
+    spec:
+      containers:
+        - name: observer-frontend
+          image: ghcr.io/dan9191/distributed-tx-monitor/observer-frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: observer-frontend-config
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "128Mi"
+              cpu: "100m"

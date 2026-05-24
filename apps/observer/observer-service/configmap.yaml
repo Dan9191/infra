@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: observer-service-config
+  namespace: observer
+data:
+  SERVER_PORT: "8033"
+  DATASOURCE_URL: "jdbc:postgresql://postgres.postgres.svc.cluster.local:5432/postgres?currentSchema=observer"
+  DATASOURCE_NAME: "postgres"
+  LOKI_BASE_URL: "http://loki.observability.svc.cluster.local:3100"
+  LOKI_STREAM_SELECTOR: '{namespace=~"graduation-article|graduation-rag"}'
+  SPRING_FLYWAY_SCHEMAS: "observer"
+  SPRING_FLYWAY_CREATE_SCHEMAS: "true"

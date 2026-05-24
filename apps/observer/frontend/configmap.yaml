@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: observer-frontend-config
+  namespace: observer
+data:
+  OBSERVER_SERVICE_URL: "http://observer-service.observer.svc.cluster.local:8033"

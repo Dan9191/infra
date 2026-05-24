@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: observer-service-dep
+  namespace: observer
+  labels:
+    app: observer-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: observer-service
+  template:
+    metadata:
+      labels:
+        app: observer-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "8033"
+    spec:
+      containers:
+        - name: observer-service
+          image: ghcr.io/dan9191/distributed-tx-monitor/observer-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8033
+              name: http
+          envFrom:
+            - configMapRef:
+                name: observer-service-config
+          env:
+            - name: DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-pass-secret
+                  key: postgres-password
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8033
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8033
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 3
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8033
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 30

@@ -15,7 +15,7 @@ data:
       role = "pod"
     
       namespaces {
-        names = ["graduation-article", "graduation-rag", "graduation-gateway"]
+        names = ["graduation-article", "graduation-rag", "graduation-gateway", "observer"]
       }
     }
 
